@@ -1,23 +1,24 @@
-import logo from './logo.svg';
+import { useEffect, useState } from 'react';
 import './App.css';
+import Layout from './component/Layout/Layout';
 
 function App() {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+      fetch('http://api.weatherapi.com/v1/forecast.json?key=698dc13c77094cf187695058201212&q=London&days=1')
+      .then(response => response.json())
+      .then(data => setData(data));
+  }, [])
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {
+      data !== null ?
+      <Layout weather = {data}/>
+      :
+      <div>loading...</div>
+      }
     </div>
   );
 }
